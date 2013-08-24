@@ -34,6 +34,22 @@ function saveTodoItems(todoItems) {
   localStorage['todoItems'] = JSON.stringify(todoItems);
 }
 
+function todoDate(todoItem) {
+  return $(todoItem).find('h4').html();
+}
+
+function todoBody(todoItem) {
+  return $(todoItem).find('p').html();
+}
+
+function todoIndex(todoItem) {
+  return $('.todo-item').index(todoDiv);
+}
+
+function todoFromDiv(todoDiv) {
+  return { date: todoDate(todoDiv), body: todoBody(todoDiv) };
+}
+
 $(document).on('click', '.editable', function(event) {
   $(this).toggleClass('editable');
   $(this).html("<input type='text' class='todo-form-item form-control' value='" + $(this).html() + "'>");
@@ -41,8 +57,16 @@ $(document).on('click', '.editable', function(event) {
 });
 
 $(document).on('blur', 'input.todo-form-item', function(event) {
-  $(this).parent('p, h4').toggleClass('editable');
+  parentSection = $(this).parent('p, h4');
+  parentSection.toggleClass('editable');
+  todoDiv = parentSection.parent();
   $(this).replaceWith($(this).val());
+  index = todoIndex(todoDiv);
+  todoItems = cachedTodoItems();
+  todoItems[index] = todoFromDiv(todoDiv);
+  console.log(todoItems);
+  saveTodoItems(todoItems);
+  console.log(cachedTodoItems());
 });
 
 $(document).on('click', '#add-todo', function(event) {
