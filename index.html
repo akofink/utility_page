@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang='en'>
+  <head>
+    <title>Utility</title>
+    <link type='text/css' rel='stylesheet' href='http://getbootstrap.com/dist/css/bootstrap.css'>
+    <script src='http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js'></script>
+    <script src='assets/database.js'></script>
+  </head>
+
+  <body>
+    <div class='hidden' id='new-todo-item-form'>
+      <div class='list-group-item'>
+        <h4 class="list-group-item-heading"><input type='text' placeholder='Date' class='form-control'></h4>
+        <p class='list-group-item-text'><input type='text' placeholder='To Do' class='form-control'></p>
+      </div>
+    </div>
+
+    <div class='container'>
+      <h1 class='page-title'>Utility<small> Andrew Kofink - <a href='http://getbootstrap.com/css/', target='_blank'>Bootstrap</a></small></h1>
+
+      <div class='row'>
+        <div class='col-md-3'>
+          <div class='panel panel-default'>
+            <div class='panel-heading'>
+              <h3 class='panel-title'>Courses<small> Fall 2013</small></h3>
+            </div>
+
+            <ul class='list-group'>
+              <a href='https://wolfware.ncsu.edu/', target='_blank' class='list-group-item'>My Courses - Wolfware</a>
+              <a href='http://courses.ncsu.edu/ece301/lec/001/', target='_blank' class='list-group-item'>ECE 301</a>
+              <a href='https://moodle1314-courses.wolfware.ncsu.edu/course/view.php?id=2872', target='_blank' class='list-group-item'>CSC 246</a>
+              <a href='https://moodle1314-courses.wolfware.ncsu.edu/course/view.php?id=2799', target='_blank', class='list-group-item'>ECE 302</a>
+              <a href='https://moodle1314-courses.wolfware.ncsu.edu/pluginfile.php/361773/mod_resource/content/2/Lecture_HW_schedule.pdf',
+                target='_blank' class='list-group-item'>ECE 302 Lecture Schedule</a>
+              <a href='https://moodle1314-courses.wolfware.ncsu.edu/course/view.php?id=3235', target='_blank', class='list-group-item'>ECE 302 Lab</a>
+              <a href='http://www.csc.ncsu.edu/faculty/efg/517/f13/', target='_blank', class='list-group-item'>CSC 517</a>
+            </ul>
+          </div>
+        </div>
+
+        <div class='col-md-4 todo-col'>
+          <div class='panel panel-default'>
+            <div class='panel-heading'>
+              <h3 class='panel-title'>ToDo
+                <button type='button' class='btn btn-xs pull-right' id='add-todo'>
+                  <span class="glyphicon glyphicon-plus"></span>
+              </button></h3>
+            </div>
+
+            <ul class='list-group' id='todo-items'>
+            </ul>
+          </div>
+        </div>
+
+        <div class='col-md-5'>
+          <div class='panel panel-default'>
+            <div class='panel-heading'>
+              <h3 class='panel-title'>Laplace Transforms</h3>
+            </div>
+
+            <div class='container'>
+              <img src='assets/laplace_transforms.png'>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
