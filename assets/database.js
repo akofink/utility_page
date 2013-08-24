@@ -11,6 +11,9 @@ function populateTodo() {
   for (i in todoItems) {
     $('#todo-items').append("\
         <div class='list-group-item todo-item'>\
+          <button class='btn btn-xs pull-right' id='remove-todo'>\
+            <span class='glyphicon glyphicon-remove'></span>\
+          </button>\
           <h4 class='list-group-item-heading editable'>" + todoItems[i].date + "</h4>\
           <p class='list-group-item-text editable'>\
             " + todoItems[i].body + "\
@@ -42,8 +45,12 @@ function todoBody(todoItem) {
   return $(todoItem).find('p').html();
 }
 
-function todoIndex(todoItem) {
-  return $('.todo-item').index(todoDiv);
+function todoIndex(todoDiv) {
+  return todoItemsInView().index(todoDiv);
+}
+
+function todoItemsInView() {
+  return $('#todo-items .todo-item');
 }
 
 function todoFromDiv(todoDiv) {
@@ -61,16 +68,31 @@ $(document).on('blur', 'input.todo-form-item', function(event) {
   parentSection.toggleClass('editable');
   todoDiv = parentSection.parent();
   $(this).replaceWith($(this).val());
-  index = todoIndex(todoDiv);
   todoItems = cachedTodoItems();
-  todoItems[index] = todoFromDiv(todoDiv);
-  console.log(todoItems);
+
+  window.todoDiv = todoDiv;
+  index = todoIndex(todoDiv);
+  console.log(index == todoItems.length);
+  if (index == todoItems.length) {
+    todoItems.push(todoFromDiv(todoDiv));
+  } else {
+    todoItems[index] = todoFromDiv(todoDiv);
+  }
+
   saveTodoItems(todoItems);
-  console.log(cachedTodoItems());
 });
 
 $(document).on('click', '#add-todo', function(event) {
   $('#todo-items').append($('#new-todo-item-form').html());
+});
+
+$(document).on('click', '#remove-todo', function(event) {
+  todoDiv = $(this).parent();
+  index = todoIndex(todoDiv);
+  todoItems = cachedTodoItems();
+  todoItems.splice(index, 1);
+  saveTodoItems(todoItems);
+  todoDiv.remove();
 });
 
 $(document).on('ready', function() {
