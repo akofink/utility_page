@@ -1,9 +1,6 @@
-preexisting = [
-  {date: '2013-08-28 Wed', body: 'ECE 302 - HW1: 1.19, 1.22, 1.30, 1.31, 2.14, 2.22, 2.34, 2.44, 2.46, 2.49'},
-  {date: '2013-08-30 Fri', body: "ECE 301 - <a href='http://courses.ncsu.edu/ece301/lec/001/wrap/TurninPDFs/turnin1.pdf'>Assignment 1</a>"},
-  {date: '2013-09-04 Wed', body: "ECE 302 - HW2"}
-];
-
+function setupLinks() {
+  $('a').attr('target', '_blank');
+}
 function populateTodo() {
 
   todoItems = cachedTodoItems();
@@ -126,4 +123,5 @@ $(document).on('click', '#move-down-todo', function(event) {
 
 $(document).on('ready', function() {
   populateTodo();
+  setupLinks();
 });
