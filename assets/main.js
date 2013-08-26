@@ -61,22 +61,21 @@ function todoFromDiv(todoDiv) {
   return { date: todoDate(todoDiv), body: todoBody(todoDiv) };
 }
 
-$(document).on('click', '.editable', function(event) {
-  $(this).toggleClass('editable');
-  $(this).html("<input type='text' class='todo-form-item form-control' value='" + $(this).html() + "'>");
+$(document).on('click', '.editable:not(a)', function(event) {
+  $(this).toggleClass('editable', false);
+  $(this).html("<input type='text' class='todo-form-item form-control' value='" + $(this).html().trim() + "'>");
   $(this).find('input').focus();
 });
 
 $(document).on('blur', 'input.todo-form-item', function(event) {
   parentSection = $(this).parent('p, h4');
-  parentSection.toggleClass('editable');
+  parentSection.toggleClass('editable', true);
   todoDiv = parentSection.parent();
-  $(this).replaceWith($(this).val());
+  $(this).replaceWith($(this).val().trim());
   todoItems = cachedTodoItems();
 
   window.todoDiv = todoDiv;
   index = todoIndex(todoDiv);
-  console.log(index == todoItems.length);
   if (index == todoItems.length) {
     todoItems.push(todoFromDiv(todoDiv));
   } else {
