@@ -6,8 +6,14 @@ function populateTodo() {
   todoItems = cachedTodoItems();
 
   for (i in todoItems) {
+    if (todoItems[i] == null) {
+      todoItems.splice(i, 1);
+    }
     itemToAppend = "\
         <div class='list-group-item todo-item'>\
+          <button class='btn btn-xs pull-right' id='toggle-status'>\
+            <span class='glyphicon glyphicon-minus'></span>\
+          </button>\
           <button class='btn btn-xs pull-right' id='remove-todo'>\
             <span class='glyphicon glyphicon-remove'></span>\
           </button>\
@@ -24,9 +30,23 @@ function populateTodo() {
         </div>\
         "
     $('#todo-items').append(itemToAppend);
+    setStatus(statusDiv(divAtIndex(i)), todoItems[i].status || false);
   }
 
-  localStorage['todoItems'] = JSON.stringify(todoItems);
+  saveTodoItems(todoItems);
+}
+
+function divAtIndex(index) {
+  return $(todoItemsInView()[index]);
+}
+
+function setStatus(div, done) {
+  div.toggleClass('glyphicon-ok', done);
+  div.toggleClass('glyphicon-minus', !done);
+}
+
+function statusDiv(todoDiv) {
+  return todoDiv.find('.glyphicon-minus, .glyphicon-ok');
 }
 
 function cachedTodoItems() {
@@ -45,8 +65,12 @@ function todoDate(todoItem) {
   return $(todoItem).find('h4').html();
 }
 
-function todoBody(todoItem) {
-  return $(todoItem).find('p').html();
+function todoBody(todoDiv) {
+  return $(todoDiv).find('p').html();
+}
+
+function todoStatus(todoDiv) {
+  return statusDiv($(todoDiv)).hasClass('glyphicon-ok');
 }
 
 function todoIndex(todoDiv) {
@@ -58,7 +82,7 @@ function todoItemsInView() {
 }
 
 function todoFromDiv(todoDiv) {
-  return { date: todoDate(todoDiv), body: todoBody(todoDiv) };
+  return { date: todoDate(todoDiv), body: todoBody(todoDiv), status: todoStatus(todoDiv) };
 }
 
 $(document).on('click', '.editable:not(a)', function(event) {
@@ -74,7 +98,6 @@ $(document).on('blur', 'input.todo-form-item', function(event) {
   $(this).replaceWith($(this).val().trim());
   todoItems = cachedTodoItems();
 
-  window.todoDiv = todoDiv;
   index = todoIndex(todoDiv);
   if (index == todoItems.length) {
     todoItems.push(todoFromDiv(todoDiv));
@@ -87,6 +110,16 @@ $(document).on('blur', 'input.todo-form-item', function(event) {
 
 $(document).on('click', '#add-todo', function(event) {
   $('#todo-items').append($('#new-todo-item-form').html());
+});
+
+$(document).on('click', '#toggle-status', function(event) {
+  todoDiv = $(this).parent();
+  index = todoIndex(todoDiv);
+  todoItems = cachedTodoItems();
+  currentItem = todoItems[index];
+  setStatus(statusDiv(todoDiv), !currentItem.status || false);
+  currentItem.status = todoStatus(todoDiv);
+  saveTodoItems(todoItems);
 });
 
 $(document).on('click', '#remove-todo', function(event) {
